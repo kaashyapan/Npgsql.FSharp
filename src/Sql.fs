@@ -500,6 +500,10 @@ module Sql =
         | Some connection -> connection
         | None -> newConnection props
 
+    let useWith (modifier: NpgsqlConnection -> NpgsqlConnection) (props: SqlProps) : SqlProps =
+        let conn = getConnection props |> modifier
+        { props with ExistingConnection = Some conn }
+
     let private populateRow (cmd: NpgsqlCommand) (row: (string * SqlValue) list) =
         for (paramName, value) in row do
             
