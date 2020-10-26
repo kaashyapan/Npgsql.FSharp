@@ -2,6 +2,7 @@ namespace Npgsql.FSharp
 
 open System
 open Npgsql
+open NpgsqlTypes
 
 [<RequireQualifiedAccess>]
 type SqlValue =
