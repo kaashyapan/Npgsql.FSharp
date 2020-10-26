@@ -27,3 +27,4 @@ type SqlValue =
     | Jsonb of string
     | StringArray of string array
     | IntArray of int array
+    | ObjOfType of obj * NpgsqlDbType

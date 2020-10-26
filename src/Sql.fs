@@ -60,6 +60,7 @@ type Sql() =
     static member intArrayOrNone(value: int[] option) = Utils.sqlMap value Sql.intArray
     static member dbnull = SqlValue.Null
     static member parameter(genericParameter: NpgsqlParameter) = SqlValue.Parameter genericParameter
+    static member objOfType(genericObject: obj, dbType: NpgsqlDbType) = SqlValue.ObjOfType(genericObject, dbType)
      
 /// Specifies how to manage SSL. 
 [<RequireQualifiedAccess>]
@@ -540,6 +541,7 @@ module Sql =
             | SqlValue.StringArray x -> add x (NpgsqlDbType.Array ||| NpgsqlDbType.Text)
             | SqlValue.IntArray x -> add x (NpgsqlDbType.Array ||| NpgsqlDbType.Integer)
             | SqlValue.Parameter x -> cmd.Parameters.AddWithValue(normalizedParameterName, x) |> ignore
+            | SqlValue.ObjOfType (object, dbType) -> add object dbType |> ignore
 
     let private populateCmd (cmd: NpgsqlCommand) (props: SqlProps) =
         if props.IsFunction then cmd.CommandType <- CommandType.StoredProcedure
